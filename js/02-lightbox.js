@@ -31,4 +31,4 @@ const galleryMarcup = galleryMarcupItem(galleryItems);
 galleryList.innerHTML = galleryMarcup;
 
 // Слухач події з функцією гортання картинки вправо-вліво і виведення підпису із alt знизу картинки, із затримкою 250 мілісекунд
-document.addEventListener('DOMContentLoaded', function () { const gallery = new SimpleLightbox('.gallery a', { captions: true, captionType: 'attr', captionsData: 'alt', captionDelay: 250, }); });
+const gallery = new SimpleLightbox('.gallery a', { captions: true, captionType: 'attr', captionsData: 'alt', captionDelay: 250, });
