@@ -34,25 +34,36 @@ galleryList.addEventListener("click", onImageClick);
 
 // Функція відкрити картинки
 function onImageClick(event) {
+  event.preventDefault();
+  if (event.target.tagName !== "IMG") {
+    return;
+  }
 
-// відміна дефолтого нвідкриття за посиланням 
-    event.preventDefault();
-if (event.target.tagName !== "IMG") {
-    return
-} 
+  let instance = null;
 
-// відкриття великої картинки
-const instance = basicLightbox.create(`
-    <img src="${event.target.dataset.source}" width="800" height="600">
-`);
-
-instance.show()
-
-// Функція закриття картинки
-galleryList.addEventListener("keydown", (event) => {
+  const closeOnEscape = (event) => {
     if (event.code === "Escape") {
-        instance.close();
+      instance.close();
+      document.removeEventListener("keydown", closeOnEscape);
     }
-  });
-}
+  };
 
+  instance = basicLightbox.create(
+    `
+    <img src="${event.target.dataset.source}" width="800" height="600">
+    `,
+    {
+      onShow: (instance) => {
+        // Додавання слухача клавіші Escape для закриття модалки
+        document.addEventListener("keydown", closeOnEscape);
+      },
+      onClose: () => {
+        // Видалення слухача клавіші Escape після закриття модалки
+        document.removeEventListener("keydown", closeOnEscape);
+      },
+    }
+  );
+
+  // Відкриття модалки
+  instance.show();
+}
